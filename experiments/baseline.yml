@@ -1,14 +1,17 @@
 data_dir: '/content/'
+use_sample: True
 use_glove: True
 glove_dir: '/content/'
 glove_dim: 300
 # qtl_src_len: 0.98
 max_src_len: 200
 use_cuda: True
-bsz: 24
+bsz: 16
+lr: 0.0001
 num_workers: 2
+model_dir: 'lr_00001'
 exp_root: '/content/drive/My Drive/U/2019-1/DL/proyecto/'
-epochs: 10
+epochs: 15
 model:
   d_model: 300
   nhead: 15
