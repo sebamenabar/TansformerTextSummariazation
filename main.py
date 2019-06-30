@@ -24,7 +24,8 @@ if __name__ == '__main__':
     print('Loading data')
     data = load_processed_dataframe(
         fp=os.path.join(cfg.data_dir, 'processed_df.msg'),
-        qtl_src_len=cfg.qtl_src_len,
+        qtl_src_len=getattr(cfg, 'qtl_src_len', None),
+        max_src_len=getattr(cfg, 'max_src_len', None),
         )
 
     train_idxs, val_idxs, test_idxs = get_idxs(os.path.join(cfg.data_dir, 'WikiHow/'), data)
@@ -50,8 +51,17 @@ if __name__ == '__main__':
         **cfg.model,
     )
 
-    model_dir = f'glove_{cfg.use_glove}_{cfg.glove_dim}_qtl_{cfg.qtl_src_len * 100:.0f}_dm_{cfg.model.d_model}_nh_{cfg.model.nhead}_nel_{cfg.model.num_encoder_layers}_ndl_{cfg.model.num_decoder_layers}_dff_{cfg.model.dim_feedforward}/'
-    model_dir = os.path.join(cfg.exp_root, model_dir)
+    if hastattr(cfg, 'model_dir'):
+        model_dir = os.path.join(cfg.exp_root, cfg.model_dir)
+    else:
+        if hasattr(cfg, 'qtl_src_len'):
+            max_len_str = f'_qtl_{cfg.qtl_src_len * 100:.0f}'
+        elif hasattr(cfg, 'max_src_len'):
+            max_len_str = f'_len_{cfg.max_src_len}'
+
+        model_dir = f'glove_{cfg.use_glove}_{cfg.glove_dim}{max_len_str}_dm_{cfg.model.d_model}_nh_{cfg.model.nhead}_nel_{cfg.model.num_encoder_layers}_ndl_{cfg.model.num_decoder_layers}_dff_{cfg.model.dim_feedforward}/'
+        model_dir = os.path.join(cfg.exp_root, model_dir)
+        
     print('Saving experiments on')
     if not os.path.exists(model_dir):
         os.makedirs(model_dir)

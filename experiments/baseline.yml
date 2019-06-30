@@ -2,7 +2,8 @@ data_dir: '/content/'
 use_glove: True
 glove_dir: '/content/'
 glove_dim: 300
-qtl_src_len: 0.98
+# qtl_src_len: 0.98
+max_src_len: 200
 use_cuda: True
 bsz: 24
 num_workers: 2
