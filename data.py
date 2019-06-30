@@ -20,7 +20,7 @@ def load_processed_dataframe(fp, max_src_len=None, qtl_src_len=None):
     if qtl_src_len is not None:
         quantile = df.data_len.quantile(qtl_src_len)
         df = df[df.data_len <= quantile].reset_index(drop=True)
-        print(f'Removed {prev_len - len(df)} examples bigger than quantile {quantile} ({quantile})')
+        print(f'Removed {prev_len - len(df)} examples bigger than quantile {qtl_src_len} ({quantile})')
     elif max_src_len:
         df = df[df.data_len <= max_src_len].reset_index(drop=True)
         print(
@@ -88,7 +88,7 @@ class CorpusDataset(Dataset):
 
 
 def generate_square_subsequent_mask(sz):
-    return torch.nn.Transformer.generate_square_subsequent_mask(_, sz)
+    return torch.nn.Transformer.generate_square_subsequent_mask(None, sz)
 
 
 class SimpleCustomBatch:

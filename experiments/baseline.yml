@@ -1,15 +1,18 @@
-data_root: '/content/'
+data_dir: '/content/'
 use_glove: True
 glove_dir: '/content/'
 glove_dim: 300
 qtl_src_len: 0.98
 use_cuda: True
+bsz: 24
+num_workers: 2
 exp_root: '/content/drive/My Drive/U/2019-1/DL/proyecto/'
+epochs: 10
 model:
-  - d_model: 300
-  - n_head: 16
-  - num_encoder_layers: 6
-  - num_decoder_layers: 6
-  - dim_feedforward: 1024
-  - dropout: 0.1
+  d_model: 300
+  nhead: 15
+  num_encoder_layers: 6
+  num_decoder_layers: 6
+  dim_feedforward: 1024
+  dropout: 0.1
 
