@@ -4,6 +4,7 @@ glove_dir: '/content/'
 glove_dim: 300
 qtl_src_len: 0.98
 use_cuda: True
+exp_root: '/content/drive/My Drive/U/2019-1/DL/proyecto/'
 model:
   - d_model: 300
   - n_head: 16

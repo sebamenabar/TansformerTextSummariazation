@@ -1,3 +1,4 @@
+import os
 import sys
 import yaml
 from copy import deepcopy
@@ -40,4 +41,11 @@ if __name__ == '__main__':
         **cfg.model,
     )
 
-    
+    model_dir = f'glove_{cfg.use_glove}_{cfg.glove_dim}_qtl_{cfg.qtl_src_len}_dm_{cfg.model.d_model}_nh_{cfg.model.n_head}_nel_{cfg.model.num_encoder_layers}_ndl_{cfg.model.num_decoder_layers}_dff_{cfg.model.dim_feedforward}/'
+    model_dir = os.path.join(cfg.exp_root, model_dir)
+    print('Saving experiments on')
+    if os.path.exists(model_dir):
+        os.makedirs(model_dir)
+    print(model_dir)
+
+
