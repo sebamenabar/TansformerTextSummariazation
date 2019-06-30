@@ -5,6 +5,11 @@ from torch.utils.data import Dataset
 from torch.nn.utils.rnn import pad_sequence
 
 
+def load_vocab(vocab_dir):
+    id2token = pd.read_msgpack(osp.join(vocab_dir, 'id2token.msg'))
+    token2id = pd.read_msgpack(osp.join(vocab_dir, 'token2id.msg'))
+    return token2id, id2token
+
 def load_processed_dataframe(fp, max_src_len=None, qtl_src_len=None):
     df = pd.read_msgpack(fp)
     # Remove whitespaces
