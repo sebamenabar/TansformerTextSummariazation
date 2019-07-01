@@ -15,6 +15,8 @@ def load_processed_dataframe(fp, max_src_len=None, qtl_src_len=None):
     # Remove whitespaces
     df.title = df.title.apply(lambda t: t.replace(' ', ''))
     df = df.rename(columns={'data': 'encoded'})
+    df.encoded = df.encoded.apply(torch.from_numpy)
+    df.label = df.label.apply(torch.from_numpy)
 
     prev_len = len(df)
     if qtl_src_len is not None:
