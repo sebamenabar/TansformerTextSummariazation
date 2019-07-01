@@ -239,7 +239,7 @@ if __name__ == '__main__':
         with open(os.path.join(cfg.data_dir, 'sample_idxs.pkl'), 'rb') as f:
             train_subset_idxs = pickle.load(f)
         train_ds = Subset(_ds, train_subset_idxs[:100000])
-        val_ds = Subset(_ds, train_subset_idxs[100000:])
+        val_ds = Subset(_ds, train_subset_idxs[100000:110000])
         train_loader = DataLoader(
             train_ds,
             shuffle=True,
