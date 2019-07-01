@@ -238,8 +238,14 @@ if __name__ == '__main__':
     if getattr(cfg, 'use_sample', False):
         with open(os.path.join(cfg.data_dir, 'sample_idxs.pkl'), 'rb') as f:
             train_subset_idxs = pickle.load(f)
-        train_ds = Subset(_ds, train_subset_idxs[:100000])
-        val_ds = Subset(_ds, train_subset_idxs[100000:110000])
+        train_idxs = train_subset_idxs[:100000]
+        val_idxs = train_subset_idxs[100000:] # tamaño 30.000
+        val_idxs = sorted(val_idxs, key=lambda x: data.iloc[x].label_len) # Para acelerar validación
+
+        print(f'Using sample, {len(train_idxs)} train examples and {len(val_idxs)} val examples')
+        
+        train_ds = Subset(_ds, train_idxs)
+        val_ds = Subset(_ds, val_idxs)
         train_loader = DataLoader(
             train_ds,
             shuffle=True,
@@ -258,6 +264,7 @@ if __name__ == '__main__':
         )
     else:
         train_ds = Subset(_ds, train_idxs)
+        val_idxs = sorted(val_idxs, key=lambda x: data.iloc[x].label_len) # Para acelerar validación
         val_ds = Subset(_ds, val_idxs)
         train_loader = DataLoader(
             train_ds,
@@ -303,6 +310,8 @@ if __name__ == '__main__':
             train_history = history['train_history']
             val_history = history['val_history']
             teacher_forcing_ratio *= teacher_forcing_decay ** start_epoch
+            if 'optimizer' in history:
+                optimizer.load_state_dict(history['optimizer'])
 
             start_epoch += 1
             print('Resuming from epoch', start_epoch)
@@ -355,5 +364,6 @@ if __name__ == '__main__':
             'model': model.state_dict(),
             'train_history': train_history,
             'val_history': val_history,
+            'optimizer': optimizer.state_dict(),
         }, os.path.join(model_dir, f'epoch{epoch}.pth'))
 
