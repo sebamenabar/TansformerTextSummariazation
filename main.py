@@ -1,6 +1,7 @@
 import os
 import sys
 import yaml
+import time
 import random
 from copy import deepcopy
 from attrdict import AttrDict
@@ -109,10 +110,7 @@ def train_step(
         if i % 100 == 0:
             torch.cuda.empty_cache()
 
-    return {
-        'time': time.time() - now,
-        'avgs': avg_meter.get_avgs(),
-    }
+    return time.time() - now, avg_meter.get_avgs()
 
 
 def val_step(
@@ -238,7 +236,7 @@ if __name__ == '__main__':
 
     _ds = CorpusDataset(data)
     if getattr(cfg, 'use_sample', False):
-        with open('sample_idxs.pkl', 'rb') as f:
+        with open(os.path.join(cfg.data_dir, 'sample_idxs.pkl'), 'rb') as f:
             train_subset_idxs = pickle.load(f)
         train_ds = Subset(_ds, train_subset_idxs[:100000])
         val_ds = Subset(_ds, train_subset_idxs[100000:])
