@@ -285,16 +285,32 @@ if __name__ == '__main__':
     epochs = cfg.epochs
     model = model.to(device)
 
+    train_history = HistoryMeter()
+    val_history = HistoryMeter()
+
     teacher_forcing_ratio = 0.9
     teacher_forcing_decay = 0.9
 
-    train_history = HistoryMeter()
-    val_history = HistoryMeter()
+    start_epoch = 1
+    resume = getattr(cfg, 'resume', False)
+    if resume:
+        ran_epochs = [int(p.strip('epoch').strip('.pth'))
+                      for p in os.listdir(model_dir)]
+        if len(ran_epochs):
+            start_epoch = max(ran_epochs)
+            history = torch.load(os.path.join(model_dir, f'epoch{start_epoch}.pth'), map_location='cpu')
+            model.load_state_dict(history['model'])
+            train_history = history['train_history']
+            val_history = history['val_history']
+            teacher_forcing_ratio *= teacher_forcing_decay ** start_epoch
+
+            start_epoch += 1
+            print('Resuming from epoch', start_epoch)
 
     evaluator = rouge.Rouge(metrics=['rouge-n', 'rouge-l'], max_n=2, apply_avg=True, apply_best=False,
                         alpha=0.5, stemming=True)
 
-    for epoch in tqdm(range(1, epochs + 1)):
+    for epoch in tqdm(range(start_epoch, epochs + 1)):
         
         train_time, train_avgs = train_step(
             model,
