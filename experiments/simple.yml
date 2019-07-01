@@ -9,14 +9,14 @@ use_cuda: True
 bsz: 16
 lr: 0.0001
 num_workers: 2
-model_dir: 'sample_lr_00001'
+model_dir: 'sample_simple_lr_00001'
 exp_root: '/content/drive/My Drive/U/2019-1/DL/proyecto/'
 epochs: 15
 model:
   d_model: 300
-  nhead: 15
-  num_encoder_layers: 6
-  num_decoder_layers: 6
-  dim_feedforward: 1024
+  nhead: 10
+  num_encoder_layers: 4
+  num_decoder_layers: 4
+  dim_feedforward: 512
   dropout: 0.1
 
