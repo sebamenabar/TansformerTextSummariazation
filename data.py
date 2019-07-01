@@ -97,8 +97,8 @@ class SimpleCustomBatch:
     def __init__(self, batch):
         self.headline = [b.headline for b in batch]
         self.text = [b.text for b in batch]
-        self.src = pad_sequence([torch.from_numpy(b.encoded) for b in batch])
-        self.tgt = pad_sequence([torch.from_numpy(b.label) for b in batch])
+        self.src = pad_sequence([b.encoded for b in batch])
+        self.tgt = pad_sequence([b.label for b in batch])
         self.gold = self.tgt[1:, :]
         self.tgt = self.tgt[:-1, :]
         self.src_mask = (self.src == 0).view(len(batch), -1)
