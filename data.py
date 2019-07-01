@@ -32,7 +32,7 @@ def load_processed_dataframe(fp, max_src_len=None, qtl_src_len=None):
 
 
 def get_titles(fp):
-    with open(fp, 'r') as f:
+    with open(fp, 'r', encoding='utf-8') as f:
         titles = f.readlines()
         titles = [t.strip() for t in titles]
     return pd.Series(titles)
