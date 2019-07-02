@@ -3,7 +3,7 @@ use_glove: True
 glove_dir: '/content/'
 glove_dim: 300
 # qtl_src_len: 0.98
-max_src_len: 200
+max_src_len: 150
 use_cuda: True
 bsz: 16
 lr: 0.0001
