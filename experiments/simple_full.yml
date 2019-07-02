@@ -7,7 +7,7 @@ max_src_len: 150
 use_cuda: True
 bsz: 16
 lr: 0.0001
-num_workers: 1
+num_workers: 0
 resume: True
 model_dir: 'full_simple_lr_00001_len_150'
 exp_root: '/content/drive/My Drive/U/2019-1/DL/proyecto/'

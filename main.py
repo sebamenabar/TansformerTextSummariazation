@@ -238,8 +238,8 @@ if __name__ == '__main__':
     if getattr(cfg, 'use_sample', False):
         with open(os.path.join(cfg.data_dir, 'sample_idxs.pkl'), 'rb') as f:
             train_subset_idxs = pickle.load(f)
-        train_idxs = train_subset_idxs[:100000]
-        val_idxs = train_subset_idxs[100000:] # tamaño 30.000
+        val_idxs = train_idxs[1000:2000] # tamaño 30.000
+        train_idxs = train_idxs[:1000]
         val_idxs = sorted(val_idxs, key=lambda x: data.iloc[x].label_len) # Para acelerar validación
 
         print(f'Using sample, {len(train_idxs)} train examples and {len(val_idxs)} val examples')
@@ -302,13 +302,13 @@ if __name__ == '__main__':
     resume = getattr(cfg, 'resume', False)
     if resume:
         ran_epochs = [int(p.strip('epoch').strip('.pth'))
-                      for p in os.listdir(model_dir)]
+                      for p in os.listdir(model_dir) if p.endswith('pth')]
         if len(ran_epochs):
             start_epoch = max(ran_epochs)
             history = torch.load(os.path.join(model_dir, f'epoch{start_epoch}.pth'), map_location='cpu')
             model.load_state_dict(history['model'])
             train_history = history['train_history']
-            val_history = history['val_history']
+            val_history = getattr(history, 'val_history', val_history)
             teacher_forcing_ratio *= teacher_forcing_decay ** start_epoch
             if 'optimizer' in history:
                 optimizer.load_state_dict(history['optimizer'])
