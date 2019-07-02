@@ -100,7 +100,7 @@ def train_step(
             loss=f'{loss.item():.3f} ({avg_loss:.3f})',
             # rouge_l=f'{rlf:.3f} ({avg_rlf:.3f})',
             rouge_1=f'{r1f:.3f} ({avg_r1f:.3f})',
-            # rouge_2=f'{r2f:.3f} ({avg_r2f:.3f})',
+            rouge_2=f'{r2f:.3f} ({avg_r2f:.3f})',
         )
 
         pbar.update()
@@ -164,7 +164,7 @@ def val_step(
                 loss=f'{loss.item():.3f} ({avg_loss:.3f})',
                 # rouge_l=f'{rlf:.3f} ({avg_rlf:.3f})',
                 rouge_1=f'{r1f:.3f} ({avg_r1f:.3f})',
-                # rouge_2=f'{r2f:.3f} ({avg_r2f:.3f})',
+                rouge_2=f'{r2f:.3f} ({avg_r2f:.3f})',
             )
 
             pbar.update()
@@ -339,9 +339,18 @@ if __name__ == '__main__':
         for metric, values in train_avgs.items():
             train_history.update(metric, values)
 
+        torch.save({
+            'model': model.state_dict(),
+            'epoch_train_avgs': train_avgs,
+            'epoch_train_time': train_time,
+            'train_history': train_history,
+            'val_history': val_history,
+            'optimizer': optimizer.state_dict(),
+        }, os.path.join(model_dir, f'epoch{epoch}.pth'))
+
         val_time, val_avgs = val_step(
             model,
-            train_loader,
+            val_loader,
             optimizer,
             criterion,
             evaluator,
@@ -362,6 +371,10 @@ if __name__ == '__main__':
 
         torch.save({
             'model': model.state_dict(),
+            'epoch_train_avgs': train_avgs,
+            'epoch_train_time': train_time,
+            'epoch_val_avgs': val_avgs,
+            'epoch_val_time': val_time,
             'train_history': train_history,
             'val_history': val_history,
             'optimizer': optimizer.state_dict(),

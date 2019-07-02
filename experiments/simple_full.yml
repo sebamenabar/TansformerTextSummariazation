@@ -7,16 +7,16 @@ max_src_len: 150
 use_cuda: True
 bsz: 16
 lr: 0.0001
-num_workers: 0
+num_workers: 1
 resume: True
-model_dir: 'full_simple_lr_00001'
+model_dir: 'full_simple_lr_00001_len_150'
 exp_root: '/content/drive/My Drive/U/2019-1/DL/proyecto/'
 epochs: 15
 model:
   d_model: 300
   nhead: 10
-  num_encoder_layers: 4
-  num_decoder_layers: 4
-  dim_feedforward: 512
+  num_encoder_layers: 3
+  num_decoder_layers: 3
+  dim_feedforward: 300
   dropout: 0.1
 
