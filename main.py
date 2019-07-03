@@ -312,6 +312,8 @@ if __name__ == '__main__':
             teacher_forcing_ratio *= teacher_forcing_decay ** start_epoch
             if 'optimizer' in history:
                 optimizer.load_state_dict(history['optimizer'])
+            for param_group in optimizer.param_groups:
+                param_group['lr'] = lr
 
             start_epoch += 1
             print('Resuming from epoch', start_epoch)

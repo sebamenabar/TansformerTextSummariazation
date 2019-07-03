@@ -1,0 +1,22 @@
+data_dir: '/content/'
+use_glove: True
+glove_dir: '/content/'
+glove_dim: 300
+# qtl_src_len: 0.98
+max_src_len: 150
+use_cuda: True
+bsz: 16
+lr: 0.00001
+num_workers: 0
+resume: True
+model_dir: 'full_simple_lr_000001_len_150'
+exp_root: '/content/drive/My Drive/U/2019-1/DL/proyecto/'
+epochs: 15
+model:
+  d_model: 300
+  nhead: 10
+  num_encoder_layers: 3
+  num_decoder_layers: 3
+  dim_feedforward: 300
+  dropout: 0.1
+
