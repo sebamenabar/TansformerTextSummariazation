@@ -52,7 +52,7 @@ def train_step(
     teacher_forcing_ratio,
 ):
     avg_meter = AvgMeter()
-    pbar = tqdm(enumerate(loader), total=len(loader), desc=f'Epoch {epoch} train')
+    pbar = tqdm(enumerate(loader), total=len(loader), desc=f'Epoch {epoch} train', ncols=10)
     now = time.time()
     model.train()
     for i, b in pbar:
@@ -124,7 +124,7 @@ def val_step(
     teacher_forcing_ratio,
 ):
     avg_meter = AvgMeter()
-    pbar = tqdm(enumerate(loader), total=len(loader), desc=f'Epoch {epoch} val')
+    pbar = tqdm(enumerate(loader), total=len(loader), desc=f'Epoch {epoch} val', ncols=10)
     now = time.time()
     model.eval()
     with torch.no_grad():
@@ -318,10 +318,15 @@ if __name__ == '__main__':
             start_epoch += 1
             print('Resuming from epoch', start_epoch)
 
+            print('Train history')
+            print(train_history.__dict__)
+            print('Val history')
+            print(val_history.__dict__)
+
     evaluator = rouge.Rouge(metrics=['rouge-n', 'rouge-l'], max_n=2, apply_avg=True, apply_best=False,
                         alpha=0.5, stemming=True)
 
-    for epoch in tqdm(range(start_epoch, epochs + 1)):
+    for epoch in tqdm(range(start_epoch, epochs + 1), ncols=10):
         
         train_time, train_avgs = train_step(
             model,
