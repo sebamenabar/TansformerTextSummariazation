@@ -295,7 +295,7 @@ if __name__ == '__main__':
     train_history = HistoryMeter()
     val_history = HistoryMeter()
 
-    teacher_forcing_ratio = 0.9
+    teacher_forcing_ratio = 0.5
     teacher_forcing_decay = 0.9
 
     start_epoch = 1
@@ -369,7 +369,7 @@ if __name__ == '__main__':
         print(val_avgs)
 
         teacher_forcing_ratio *= teacher_forcing_decay
-        teacher_forcing_ratio = max(teacher_forcing_ratio, 0.5)
+        teacher_forcing_ratio = max(teacher_forcing_ratio, 0.1)
 
         torch.save({
             'model': model.state_dict(),
