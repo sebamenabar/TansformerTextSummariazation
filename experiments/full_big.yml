@@ -1,5 +1,4 @@
 data_dir: '/content/'
-use_sample: True
 use_glove: True
 glove_dir: '/content/'
 glove_dim: 300
